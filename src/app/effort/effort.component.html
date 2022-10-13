@@ -1,0 +1,21 @@
+<nav>
+    <a routerLink="/form"><button>Add</button></a>
+</nav>
+<table>
+    <tr>
+        <th>Description</th>
+        <th>Time</th>
+        <th>Category</th>
+        <th>Created on</th>
+    </tr>
+    <tr *ngFor="let effort of efforts">
+        <td>
+            <a *ngIf="effort.URL" href="{{effort.URL}}">{{effort.description}}</a>
+            <a *ngIf="!effort.URL">{{effort.description}}</a>
+        </td>
+        <td>{{effort.time}}</td>
+        <td [style.background-color]="getColor(effort.category)" >{{effort.category}}</td>
+        <td>{{effort.createdAt}}</td>
+        <td><button><img [style.height.px]="15" src="https://pic.onlinewebfonts.com/svg/img_216917.png" (click)="deleteEffort(effort)"/></button></td>
+    </tr>
+</table>
