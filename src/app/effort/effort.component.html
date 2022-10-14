@@ -1,21 +1,62 @@
 <nav>
-    <a routerLink="/form"><button>Add</button></a>
+    <a routerLink="/form"><button mat-flat-button color="primary">Add</button></a>
 </nav>
-<table>
-    <tr>
-        <th>Description</th>
-        <th>Time</th>
-        <th>Category</th>
-        <th>Created on</th>
-    </tr>
-    <tr *ngFor="let effort of efforts" routerLink="/form/{{effort.id}}">
-        <td>
-            <a *ngIf="effort.URL" href="{{effort.URL}}">{{effort.description}}</a>
-            <a *ngIf="!effort.URL">{{effort.description}}</a>
-        </td>
-        <td>{{effort.time}}</td>
-        <td [style.background-color]="getColor(effort.category)" >{{effort.category}}</td>
-        <td>{{effort.createdAt}}</td>
-        <td><button><img [style.height.px]="15" src="https://pic.onlinewebfonts.com/svg/img_216917.png" (click)="deleteEffort(effort)"/></button></td>
-    </tr>
-</table>
+
+<div class="table-layout">
+
+</div>
+<table mat-table [dataSource]="efforts">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+  
+    <!-- Position Column -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    </ng-container>
+  
+    <!-- Name Column -->
+    <ng-container matColumnDef="time">
+      <th mat-header-cell *matHeaderCellDef>Time</th>
+      <td mat-cell *matCellDef="let element"> {{element.time}} </td>
+    </ng-container>
+  
+    <!-- Weight Column -->
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef >Category</th>
+      <td mat-cell *matCellDef="let element" [style.background-color]="getColor(element.category)"> {{element.category}} </td>
+    </ng-container>
+  
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="created">
+      <th mat-header-cell *matHeaderCellDef >Created</th>
+      <td mat-cell *matCellDef="let element"> {{element.createdAt}} </td>
+    </ng-container>
+  
+    <!-- Delete Button -->
+    <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-button color="primary" type="submit">
+          <mat-icon (click)="deleteEffort(element)">delete</mat-icon>
+          <!-- <img [style.height.px]="15" src="https://pic.onlinewebfonts.com/svg/img_216917.png" (click)="deleteEffort(element)"/> -->
+        </button>
+      </td>
+    </ng-container>
+  
+    <!-- Update Button -->
+    <ng-container matColumnDef="update">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-button color="primary" type="submit" routerLink="/form/{{element.id}}">
+          <mat-icon>update</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
+  

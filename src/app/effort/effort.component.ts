@@ -12,9 +12,11 @@ export class EffortComponent implements OnInit {
 
   public efforts: Effort[] = [];
 
-  public angularColor: string = "#A6120D";
-  public javascriptColor: string = "#F0DB4F";
-  public typescriptColor: string = "#007ACC";
+  public angularColor: string = "#D1495B";
+  public javascriptColor: string = "#EDAE49";
+  public typescriptColor: string = "#4A88ED";
+
+  public displayedColumns: string[] = ['description', 'time', 'category', 'created', 'delete', 'update'];
 
   constructor(private effortService: EffortService) { }
 

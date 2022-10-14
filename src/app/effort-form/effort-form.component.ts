@@ -62,7 +62,6 @@ export class EffortFormComponent implements OnInit {
 
   getEffort(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    console.log(id);
     this.effortService.getEffort(id)
       .subscribe(effort => {
         this.effort = effort;

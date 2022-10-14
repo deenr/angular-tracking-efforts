@@ -1,22 +1,29 @@
 <form [formGroup]="effortForm" (ngSubmit)="onSubmit()">
-    <label for="description">Description</label><br>
-    <input matInput type="text" formControlName="description" id="description"/><br>
-    <span *ngIf="submitted && effortForm.get('description')?.errors?.['required']">Enter description</span><br>
+    <mat-form-field appearance="fill">
+        <mat-label for="description">Description</mat-label>
+        <input matInput type="text" formControlName="description" id="description"/>
+        <mat-error *ngIf="submitted && effortForm.get('description')?.errors?.['required']">Enter description</mat-error>
+    </mat-form-field>
 
-    <label for="URL">URL</label><br>
-    <input type="text" formControlName="URL" id="URL"><br>
+    <mat-form-field appearance="fill">
+        <mat-label for="URL">URL</mat-label>
+        <input matInput type="text" formControlName="URL" id="URL">
+    </mat-form-field>
 
-    <label for="time">Time</label><br>
-    <input type="number" formControlName="time" id="time"><br>
+    <mat-form-field appearance="fill">
+        <mat-label for="time">Time</mat-label>
+        <input matInput type="number" formControlName="time" id="time">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label for="category">Category</mat-label>
+        <mat-select formControlName="category" id="category">
+            <mat-option value="angular">Angular</mat-option>
+            <mat-option value="javascript">JavaScript</mat-option>
+            <mat-option value="typescript">TypeScript</mat-option>
+        </mat-select>
+        <mat-error *ngIf="submitted && effortForm.get('category')?.errors?.['required']">Enter category</mat-error>
+    </mat-form-field>
     
-    <label for="category">Category</label><br>
-    <select formControlName="category" id="category">
-        <option value="angular">Angular</option>
-        <option value="javascript">JavaScript</option>
-        <option value="typescript">TypeScript</option>
-    </select><br>
-    <span *ngIf="submitted && effortForm.get('category')?.errors?.['required']">Enter description</span><br><br>
-
-
-    <button type="submit">Submit</button>
+    <button mat-raised-button color="primary" type="submit">Submit</button>
 </form>
