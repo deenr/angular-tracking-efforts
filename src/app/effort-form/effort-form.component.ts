@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 import { EffortService } from "../effort.service";
 
 import { Effort } from "../effort";
+import { connect } from 'rxjs';
+import { identifierName } from '@angular/compiler';
 
 @Component({
   selector: 'app-effort-form',
@@ -20,12 +23,15 @@ export class EffortFormComponent implements OnInit {
   });
 
   public submitted: boolean = false;
+  public effort?: Effort; 
   
   constructor(
+    private route: ActivatedRoute,
     private effortService: EffortService, 
     private location: Location) { }
 
   ngOnInit(): void {
+    this.getEffort();
   }
 
   goBack(): void {
@@ -34,12 +40,34 @@ export class EffortFormComponent implements OnInit {
 
   public onSubmit(): void {
     this.submitted = true;
-    const createdAt: Date = new Date();
-    if (this.effortForm.valid) {
-      let effort: Effort = {...this.effortForm.value, createdAt};
-      this.effortService.addEffort(effort)
-        .subscribe(() => this.goBack());
+    if (this.effort) {
+      if (this.effortForm.valid) {
+        this.effort.description = this.effortForm.get('description')?.value;
+        this.effort.URL = this.effortForm.get('URL')?.value;
+        this.effort.time = this.effortForm.get('time')?.value;
+        this.effort.category = this.effortForm.get('category')?.value;
+
+        this.effortService.updateEffort(this.effort)
+          .subscribe(() => this.goBack());
+      }
+    } else {
+      const createdAt: Date = new Date();
+      if (this.effortForm.valid) {
+        let effort: Effort = {...this.effortForm.value, createdAt};
+        this.effortService.addEffort(effort)
+          .subscribe(() => this.goBack());
+      }
     }
+  }
+
+  getEffort(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    console.log(id);
+    this.effortService.getEffort(id)
+      .subscribe(effort => {
+        this.effort = effort;
+        this.effortForm.patchValue({...this.effort});
+      });
   }
 
 }

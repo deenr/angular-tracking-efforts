@@ -8,7 +8,7 @@
         <th>Category</th>
         <th>Created on</th>
     </tr>
-    <tr *ngFor="let effort of efforts">
+    <tr *ngFor="let effort of efforts" routerLink="/form/{{effort.id}}">
         <td>
             <a *ngIf="effort.URL" href="{{effort.URL}}">{{effort.description}}</a>
             <a *ngIf="!effort.URL">{{effort.description}}</a>

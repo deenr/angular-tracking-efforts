@@ -10,12 +10,18 @@ import { Effort } from "./effort";
   providedIn: 'root'
 })
 export class EffortService {
-  private effortURL: string = "https://6347d5a50484786c6e89ebfe.mockapi.io/effort/";
+  private effortURL: string = "https://6347d5a50484786c6e89ebfe.mockapi.io/effort";
 
   constructor(private http: HttpClient) { }
 
   public getEfforts(): Observable<Effort[]> {
     return this.http.get<Effort[]>(this.effortURL);
+  }
+
+  getEffort(id: number): Observable<Effort> {
+    // For now, assume that a hero with the specified `id` always exists.
+    // Error handling will be added in the next step of the tutorial.
+    return this.http.get<Effort>(`${this.effortURL}/${id}`);
   }
 
   public addEffort(effort: Effort): Observable<any> {
@@ -24,14 +30,11 @@ export class EffortService {
     return this.http.post<Effort>(this.effortURL, body, {'headers':headers});
   }
 
+  public deleteEffort(id: number): Observable<Effort> {
+    return this.http.delete<Effort>(`${this.effortURL}/${id}`);
+  }
 
-  
-  public deleteEffort(id: number): Observable<any> {
-    let httpheaders=new HttpHeaders()
-    .set('Content-type','application/Json');
-    let options={
-      headers:httpheaders
-    };
-    return this.http.delete<Effort>(this.effortURL + id);
+  public updateEffort(effort:Effort): Observable<Effort> {
+    return this.http.put<Effort>(`${this.effortURL}/${effort.id}`, effort);
   }
 }

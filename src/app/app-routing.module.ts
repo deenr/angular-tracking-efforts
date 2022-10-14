@@ -7,7 +7,8 @@ import { EffortFormComponent } from "./effort-form/effort-form.component";
 const routes: Routes = [
   { path: '', component: EffortComponent },
   { path: 'effort', component: EffortComponent },
-  { path: 'form', component: EffortFormComponent }
+  { path: 'form', component: EffortFormComponent },
+  { path: 'form/:id', component: EffortFormComponent }
 ];
 
 @NgModule({

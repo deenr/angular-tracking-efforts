@@ -1,6 +1,6 @@
 <form [formGroup]="effortForm" (ngSubmit)="onSubmit()">
     <label for="description">Description</label><br>
-    <input type="text" formControlName="description" id="description"/><br>
+    <input matInput type="text" formControlName="description" id="description"/><br>
     <span *ngIf="submitted && effortForm.get('description')?.errors?.['required']">Enter description</span><br>
 
     <label for="URL">URL</label><br>
