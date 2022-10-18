@@ -39,9 +39,8 @@ export class EffortComponent implements OnInit {
 
   public getEfforts(): void {
     this.effortService.getEfforts()
-      .subscribe(efforts => {
-        console.log(efforts)
-        this.efforts = efforts.sort((a,b)=>{
+      .subscribe(effort => {
+        this.efforts = effort.sort((a,b)=>{
               return a.createdAt==b.createdAt?0
                     :a.createdAt>b.createdAt?-1:1
         });

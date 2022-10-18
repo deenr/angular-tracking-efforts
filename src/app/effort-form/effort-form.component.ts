@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
 import { EffortService } from "../effort.service";
 
 import { Effort } from "../effort";
-import { ConnectableObservable } from 'rxjs';
 
 @Component({
   selector: 'app-effort-form',
@@ -28,8 +26,7 @@ export class EffortFormComponent implements OnInit {
   public constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private effortService: EffortService,
-    private location: Location) { }
+    private effortService: EffortService) { }
 
   public ngOnInit(): void {
     this.getEffort();
@@ -41,22 +38,21 @@ export class EffortFormComponent implements OnInit {
 
   public onSubmit(): void {
     this.submitted = true;
-    if (this.effort) {
-      if (this.effortForm.valid) {
+    if (this.effortForm.valid) {
+      if (this.effort) {
         this.effort.description = this.effortForm.get('description')?.value;
         this.effort.URL = this.effortForm.get('URL')?.value;
         this.effort.time = this.effortForm.get('time')?.value;
         this.effort.category = this.effortForm.get('category')?.value;
-
+  
         this.effortService.updateEffort(this.effort)
           .subscribe(_ => {
             console.log(_);
             this.goToEffortRoute();
           });
       }
-    } else {
-      const createdAt: string = new Date().toISOString();
-      if (this.effortForm.valid) {
+      else {
+        const createdAt: string = new Date().toISOString();
         let effort: Effort = new Effort(
           1,
           this.effortForm.get('description')?.value,
@@ -68,10 +64,10 @@ export class EffortFormComponent implements OnInit {
         this.effortService.addEffort(effort)
           .subscribe(_ => {
             console.log(_);
-            this.goToEffortRoute()
+            this.goToEffortRoute();
           });
       }
-    };
+    }
   }
 
   public getEffort(): void {

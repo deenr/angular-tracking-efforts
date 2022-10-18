@@ -70,7 +70,7 @@ describe('EffortComponent', () => {
     });
 
     it('should return JSON', () => {
-      expect(effortJSON).toEqual(effort.toJSON())
+      expect(effort.toJSON()).toEqual(effortJSON)
     });
 
     it('should return object from JSON', () => {
@@ -79,6 +79,7 @@ describe('EffortComponent', () => {
   });
 
   describe('Effort service', () => {
+
     it('should return all efforts', () => {
       let efforts: Effort[] = [
         new Effort(1, 'test', 'angular', new Date().toISOString(), "https://www.google.com", 3),
@@ -86,9 +87,21 @@ describe('EffortComponent', () => {
       ];
       spyOn(effortService, 'getEfforts').and.returnValue(of(efforts));
 
-      let returnedEfforts = component.getEfforts();
+      component.getEfforts();
+
+      expect(component.efforts).toEqual(efforts);
       
       expect(effortService.getEfforts).toHaveBeenCalled();
     });
+  });
+
+  it('should delete effort and return the deleted effort', () => {
+    let effort: Effort = new Effort(1, 'test', 'angular', new Date().toISOString(), "https://www.google.com", 3);
+
+    spyOn(effortService, 'deleteEffort').and.returnValue(of(effort));
+
+    component.deleteEffort(effort);
+    
+    expect(effortService.deleteEffort).toHaveBeenCalledOnceWith(effort.id);
   });
 });
