@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { EffortService } from "../effort.service";
 
 import { Effort } from "../effort";
-import { connect } from 'rxjs';
-import { identifierName } from '@angular/compiler';
+import { ConnectableObservable } from 'rxjs';
 
 @Component({
   selector: 'app-effort-form',
@@ -16,26 +16,27 @@ import { identifierName } from '@angular/compiler';
 })
 export class EffortFormComponent implements OnInit {
   public effortForm: FormGroup = new FormGroup({
-    description: new FormControl('', [Validators.required]),
-    URL: new FormControl(''),
-    time: new FormControl(''),
-    category: new FormControl('', [Validators.required])
+    description: new FormControl(null, [Validators.required]),
+    URL: new FormControl(null),
+    time: new FormControl(null),
+    category: new FormControl(null, [Validators.required])
   });
 
   public submitted: boolean = false;
-  public effort?: Effort; 
-  
-  constructor(
+  public effort?: Effort;
+
+  public constructor(
     private route: ActivatedRoute,
-    private effortService: EffortService, 
+    private router: Router,
+    private effortService: EffortService,
     private location: Location) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getEffort();
   }
 
-  goBack(): void {
-    this.location.back();
+  public goToEffortRoute(): void {
+    this.router.navigate(['/effort'], { relativeTo: this.route });
   }
 
   public onSubmit(): void {
@@ -48,25 +49,50 @@ export class EffortFormComponent implements OnInit {
         this.effort.category = this.effortForm.get('category')?.value;
 
         this.effortService.updateEffort(this.effort)
-          .subscribe(() => this.goBack());
+          .subscribe(_ => {
+            console.log(_);
+            this.goToEffortRoute();
+          });
       }
     } else {
-      const createdAt: Date = new Date();
+      const createdAt: string = new Date().toISOString();
       if (this.effortForm.valid) {
-        let effort: Effort = {...this.effortForm.value, createdAt};
+        let effort: Effort = new Effort(
+          1,
+          this.effortForm.get('description')?.value,
+          this.effortForm.get('category')?.value,
+          createdAt,
+          this.effortForm.get('URL')?.value,
+          this.effortForm.get('time')?.value,
+        );
         this.effortService.addEffort(effort)
-          .subscribe(() => this.goBack());
+          .subscribe(_ => {
+            console.log(_);
+            this.goToEffortRoute()
+          });
       }
-    }
+    };
   }
 
-  getEffort(): void {
+  public getEffort(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.effortService.getEffort(id)
-      .subscribe(effort => {
-        this.effort = effort;
-        this.effortForm.patchValue({...this.effort});
-      });
+    
+    console.log(id);
+    if (id !== 0) {
+    
+      this.effortService.getEffort(id)
+        .subscribe(effort => {
+          console.log(effort);
+          this.effort = effort;
+          this.effortForm.setValue({
+            description: effort.description, 
+            URL: effort.URL,
+            time: effort.time,
+            category: effort.category
+          });
+        });
+    }
+    
   }
 
 }

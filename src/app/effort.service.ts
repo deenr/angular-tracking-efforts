@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import {map} from 'lodash-es';
+import {Observable} from 'rxjs';
+import {map as rxjsMap} from 'rxjs/operators';
 
 import { Effort } from "./effort";
 
@@ -15,26 +16,33 @@ export class EffortService {
   constructor(private http: HttpClient) { }
 
   public getEfforts(): Observable<Effort[]> {
-    return this.http.get<Effort[]>(this.effortURL);
+    return this.http.get(this.effortURL).pipe(
+      rxjsMap((effortsJSON: any) => {
+        return map(effortsJSON, (effortJSON: any) => {
+          return Effort.fromJSON(effortJSON);
+        });
+      })
+    );
   }
 
-  getEffort(id: number): Observable<Effort> {
-    // For now, assume that a hero with the specified `id` always exists.
-    // Error handling will be added in the next step of the tutorial.
-    return this.http.get<Effort>(`${this.effortURL}/${id}`);
+  public getEffort(id: number): Observable<Effort> {
+    return this.http.get<Effort>(`${this.effortURL}/${id}`).pipe(
+      rxjsMap((effortJSON: any) => {
+        return Effort.fromJSON(effortJSON)
+      })
+    );
   }
 
-  public addEffort(effort: Effort): Observable<any> {
-    const headers = { 'content-type': 'application/json'}  
-    const body=JSON.stringify(effort);
-    return this.http.post<Effort>(this.effortURL, body, {'headers':headers});
+  public addEffort(effort: Effort): Observable<number> {
+    return this.http.post<{id: number}>(this.effortURL, effort.toJSON())
+      .pipe(rxjsMap((response: {id: number}) => response.id));
   }
 
   public deleteEffort(id: number): Observable<Effort> {
     return this.http.delete<Effort>(`${this.effortURL}/${id}`);
   }
 
-  public updateEffort(effort:Effort): Observable<Effort> {
-    return this.http.put<Effort>(`${this.effortURL}/${effort.id}`, effort);
+  public updateEffort(effort: Effort): Observable<Effort> {
+    return this.http.put<Effort>(`${this.effortURL}/${effort.id}`, effort.toJSON());
   }
 }

@@ -18,9 +18,9 @@ export class EffortComponent implements OnInit {
 
   public displayedColumns: string[] = ['description', 'time', 'category', 'created', 'delete', 'update'];
 
-  constructor(private effortService: EffortService) { }
+  public constructor(private effortService: EffortService) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getEfforts();
   }
 
@@ -39,8 +39,9 @@ export class EffortComponent implements OnInit {
 
   public getEfforts(): void {
     this.effortService.getEfforts()
-      .subscribe(effort => {
-        this.efforts = effort.sort((a,b)=>{
+      .subscribe(efforts => {
+        console.log(efforts)
+        this.efforts = efforts.sort((a,b)=>{
               return a.createdAt==b.createdAt?0
                     :a.createdAt>b.createdAt?-1:1
         });
@@ -50,6 +51,6 @@ export class EffortComponent implements OnInit {
   public deleteEffort(effort: Effort): void {
     this.efforts = this.efforts.filter(e => e !== effort);
     this.effortService.deleteEffort(effort.id)
-      .subscribe();
+      .subscribe(_ => console.log(_));
   }
 }
