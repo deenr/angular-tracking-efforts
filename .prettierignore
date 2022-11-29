@@ -1,0 +1,18 @@
+# Created by .ignore support plugin (hsz.mobi)
+
+# compiled output
+package.json
+package-lock.json
+/dist
+
+# dependencies
+/node_modules
+
+# IDEs and editors
+/.idea
+
+# misc
+/reports
+/src/environments/version.ts
+/logs/
+/pacts/

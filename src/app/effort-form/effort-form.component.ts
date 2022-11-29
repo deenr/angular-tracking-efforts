@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
+import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { EffortService } from "../effort.service";
 
@@ -13,22 +12,18 @@ import { Effort } from "../effort";
   styleUrls: ['./effort-form.component.scss']
 })
 export class EffortFormComponent implements OnInit {
-  public effortForm: FormGroup = new FormGroup({
-    description: new FormControl(null, [Validators.required]),
-    URL: new FormControl(null),
-    time: new FormControl(null),
-    category: new FormControl(null, [Validators.required])
-  });
-
+  public effortForm!: FormGroup; 
   public submitted: boolean = false;
   public effort?: Effort;
 
   public constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private effortService: EffortService) { }
+    private effortService: EffortService,
+    private formBuilder: FormBuilder) { }
 
   public ngOnInit(): void {
+    
     this.getEffort();
   }
 
@@ -71,6 +66,8 @@ export class EffortFormComponent implements OnInit {
   }
 
   public getEffort(): void {
+    this.initialiseForm();
+
     const id = Number(this.route.snapshot.paramMap.get('id'));
     
     console.log(id);
@@ -88,7 +85,14 @@ export class EffortFormComponent implements OnInit {
           });
         });
     }
-    
   }
 
+  private initialiseForm(): void {
+    this.effortForm = this.formBuilder.group({
+      description: [null, [Validators.required]],
+      URL: [null, Validators.pattern(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/)],
+      time: null,
+      category: [null, [Validators.required]]
+    });
+  }
 }
