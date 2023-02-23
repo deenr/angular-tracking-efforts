@@ -1,27 +1,22 @@
-# AngularTrackingEfforts
+# Angular Tracking Efforts
+This repository contains the code for a simple Angular application that allows users to track their learning efforts and keep track of their skills. The application was created as a project to gain a better understanding of the Angular framework.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.5.
+## Description
+The Angular Skill Tracker is a single-page application that displays a list of skills that the user wants to learn or improve. Users can add new skills to the list, set the amount of time they want to spend on this skill, and the programming language of that skill. The application uses local storage to persist user data across sessions.
 
-## Development server
+## Technologies Used
+The Angular Skill Tracker was developed using the following technologies:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Angular framework
+- TypeScript programming language
+- HTML and CSS for styling
 
-## Code scaffolding
+## Installation and Usage
+To run the Angular Tour of Heroes application, follow these steps:
+1. Clone this repository to your local machine.
+2. Open the project in a code editor.
+3. Run `npm install` to install the required dependencies.
+4. Run `ng serve` to start the development server.
+5. Navigate to `http://localhost:4200/` in your browser to view the app.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Once the app is running, you can navigate through the various views of the application to see how it works.
